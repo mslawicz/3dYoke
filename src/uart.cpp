@@ -9,7 +9,7 @@
 #include "system.h"
 #include "gpio.h"
 
-UART_HandleTypeDef* UART::pUSART2 = nullptr;
+UART* UART::pUSART2 = nullptr;
 
 UART::UART(USART_TypeDef* instance, uint32_t baudRate) :
     instance(instance)
@@ -54,7 +54,7 @@ UART::UART(USART_TypeDef* instance, uint32_t baudRate) :
 
     if(instance == USART2)
     {
-        pUSART2 = &hUart;
+        pUSART2 = this;
         /* USART2 interrupt Init */
         HAL_NVIC_SetPriority(USART2_IRQn, 2, 0);
         HAL_NVIC_EnableIRQ(USART2_IRQn);
@@ -83,7 +83,8 @@ void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart)
 {
     if(huart->Instance == USART2)
     {
-        System::getInstance().getConsole()->getInterface().clearBusyFlag();
+        //System::getInstance().getConsole()->getInterface().clearBusyFlag();
+        UART::pUSART2->clearBusyFlag();
     }
 }
 
@@ -98,9 +99,9 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
     if(huart->Instance == USART2)
     {
         // move received character to the reception string
-        System::getInstance().getConsole()->getInterface().moveReceivedByte();
+        UART::pUSART2->moveReceivedByte();
         // wait for the next character to receive
-        System::getInstance().getConsole()->getInterface().startReception();
+        UART::pUSART2->startReception();
     }
 }
 

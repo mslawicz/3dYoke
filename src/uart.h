@@ -25,7 +25,8 @@ public:
     void moveReceivedByte(void);
     bool stringReceived(void) const { return !receptionQueue.empty(); }
     std::string getReceivedString(void);
-    static UART_HandleTypeDef* pUSART2;
+    UART_HandleTypeDef* getUartHandle(void) { return &hUart; }
+    static UART* pUSART2;
 private:
     UART_HandleTypeDef hUart;   // structure defining UART
     USART_TypeDef* instance;    // USART instance

@@ -11,7 +11,6 @@
 
 
 #include "stm32f4xx.h"
-#include "stm32f4xx_nucleo.h"
 #include "system.h"
 #include "gpio.h"
 #include "timer.h"
@@ -21,8 +20,6 @@ int main(void)
 {
     System::getInstance().config();
 
-    GPIO pushbutton(USER_BUTTON_GPIO_PORT, USER_BUTTON_PIN, GPIO_MODE_INPUT, GPIO_PULLUP);
-    GPIO led(LED2_GPIO_PORT, LED2_PIN, GPIO_MODE_OUTPUT_PP);
     Timer ledTimer;
 
     // start reception of the first character
@@ -36,7 +33,7 @@ int main(void)
     {
         if(ledTimer.elapsed(500000))
         {
-            led.toggle();
+            System::getInstance().systemLED.toggle();
             ledTimer.reset();
         }
 

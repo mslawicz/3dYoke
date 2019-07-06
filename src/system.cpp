@@ -8,10 +8,13 @@
 #include "system.h"
 
 #include "stm32f4xx_hal.h"
+#include "stm32f4xx_nucleo.h"
 #include "system.h"
 #include "timer.h"
 
-System::System()
+System::System() :
+    systemLED(LED2_GPIO_PORT, LED2_PIN, GPIO_MODE_OUTPUT_PP),
+    systemPushbutton(USER_BUTTON_GPIO_PORT, USER_BUTTON_PIN, GPIO_MODE_INPUT, GPIO_PULLUP)
 {
     /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
     HAL_Init();

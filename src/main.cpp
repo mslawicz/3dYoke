@@ -31,6 +31,7 @@ int main(void)
         System::getInstance().blinkLED();
 
         System::getInstance().getConsole()->handler();
+        System::getInstance().getDisplay()->test();
     }
 
     System::getInstance().terminate();

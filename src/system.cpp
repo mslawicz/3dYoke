@@ -11,6 +11,7 @@
 #include "stm32f4xx_nucleo.h"
 #include "system.h"
 #include "timer.h"
+#include "display.h"
 
 System::System() :
     systemLED(LED2_GPIO_PORT, LED2_PIN, GPIO_MODE_OUTPUT_PP),
@@ -33,6 +34,7 @@ System::System() :
     configClock();
 
     pConsole = nullptr;
+    pDisplay = nullptr;
 }
 
 System::~System()
@@ -100,6 +102,8 @@ void System::config(void)
     Timer::config();
     pConsole = new Console;
     pConsole->sendMessage(Severity::Info,LogChannel::LC_SYSTEM, "3d yoke program start");
+
+    pDisplay = new Display(SpiBus::pSpi3, DISPLAY_CS_PORT, DISPLAY_CS_PIN);
 }
 
 /*
@@ -107,6 +111,7 @@ void System::config(void)
  */
 void System::terminate(void)
 {
+    delete pDisplay;
     delete pConsole;
 }
 

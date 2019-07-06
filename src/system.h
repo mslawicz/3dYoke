@@ -10,6 +10,7 @@
 
 #include "gpio.h"
 #include "console.h"
+#include "display.h"
 
 class System
 {
@@ -21,12 +22,14 @@ public:
     void terminate(void);
     void blinkLED(void);
     Console* getConsole(void) const { return pConsole; }
+    Display* getDisplay(void) const { return pDisplay; }
 private:
     System();
     void configClock(void);
     GPIO systemLED;
     GPIO systemPushbutton;
     Console* pConsole;
+    Display* pDisplay;
 };
 
 #endif /* SYSTEM_H_ */

@@ -9,7 +9,7 @@
 
 #include "stm32f4xx_hal.h"
 #include "system.h"
-//#include "timer.h"
+#include "timer.h"
 
 System::System()
 {
@@ -92,7 +92,7 @@ void System::configClock(void)
  */
 void System::config(void)
 {
-    //Timer::config();
+    Timer::config();
     //pConsole = new Console;
     //pConsole->sendMessage(Severity::Info,LogChannel::LC_SYSTEM, "MiBot start");
 }

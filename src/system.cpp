@@ -31,6 +31,8 @@ System::System() :
 
     /* Configure the system clock */
     configClock();
+
+    pConsole = nullptr;
 }
 
 System::~System()
@@ -96,8 +98,8 @@ void System::configClock(void)
 void System::config(void)
 {
     Timer::config();
-    //pConsole = new Console;
-    //pConsole->sendMessage(Severity::Info,LogChannel::LC_SYSTEM, "MiBot start");
+    pConsole = new Console;
+    pConsole->sendMessage(Severity::Info,LogChannel::LC_SYSTEM, "3d yoke program start");
 }
 
 /*
@@ -105,7 +107,7 @@ void System::config(void)
  */
 void System::terminate(void)
 {
-    //delete pConsole;
+    delete pConsole;
 }
 
 /*

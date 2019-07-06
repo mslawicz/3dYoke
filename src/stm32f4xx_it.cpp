@@ -16,6 +16,7 @@
 #endif
 #include "stm32f4xx_it.h"
 #include "uart.h"
+#include "spi.h"
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
@@ -145,25 +146,17 @@ void USART2_IRQHandler(void)
 }
 
 /**
-  * @brief This function handles SPI1 global interrupt.
+  * @brief This function handles SPI3 global interrupt.
   */
-//void SPI1_IRQHandler(void)
-//{
-//    HAL_SPI_IRQHandler(SpiBus::pSpi1->getHandle());
-//}
+void SPI3_IRQHandler(void)
+{
+    //HAL_SPI_IRQHandler(SpiBus::pSpi1->getHandle());
+}
 
 /**
-  * @brief This function handles DMA2 stream0 global interrupt.
+  * @brief This function handles DMA1 stream5 global interrupt.
   */
-//void DMA2_Stream0_IRQHandler(void)
-//{
-//    HAL_DMA_IRQHandler(SpiBus::pSpi1->getDmaRxHandle());
-//}
-
-/**
-  * @brief This function handles DMA2 stream3 global interrupt.
-  */
-//void DMA2_Stream3_IRQHandler(void)
-//{
-//    HAL_DMA_IRQHandler(SpiBus::pSpi1->getDmaTxHandle());
-//}
+void DMA1_Stream5_IRQHandler(void)
+{
+    HAL_DMA_IRQHandler(SpiBus::pSpi3->getDmaTxHandle());
+}

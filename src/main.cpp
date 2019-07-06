@@ -13,14 +13,11 @@
 #include "stm32f4xx.h"
 #include "system.h"
 #include "gpio.h"
-#include "timer.h"
 			
 
 int main(void)
 {
     System::getInstance().config();
-
-    Timer ledTimer;
 
     // start reception of the first character
     //System::getInstance().getConsole()->getInterface().startReception();
@@ -31,11 +28,7 @@ int main(void)
     // main loop
     while(1)
     {
-        if(ledTimer.elapsed(500000))
-        {
-            System::getInstance().systemLED.toggle();
-            ledTimer.reset();
-        }
+        System::getInstance().blinkLED();
 
         //System::getInstance().getConsole()->handler();
     }

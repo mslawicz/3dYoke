@@ -108,3 +108,15 @@ void System::terminate(void)
     //delete pConsole;
 }
 
+/*
+ * blinks the system LED in 1 second interval
+ */
+void System::blinkLED(void)
+{
+    static Timer ledTimer;
+    if(ledTimer.elapsed(500000))
+    {
+        ledTimer.reset();
+        systemLED.toggle();
+    }
+}

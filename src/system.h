@@ -18,11 +18,12 @@ public:
     void errorHandler(void) {};
     void config(void);
     void terminate(void);
-    GPIO systemLED;
-    GPIO systemPushbutton;
+    void blinkLED(void);
 private:
     System();
     void configClock(void);
+    GPIO systemLED;
+    GPIO systemPushbutton;
 };
 
 #endif /* SYSTEM_H_ */

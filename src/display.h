@@ -27,6 +27,8 @@ public:
     void test(void);
     void handler(void);
 private:
+    void sendCommand(std::vector<uint8_t> commands) { dataQueue.push(DisplayContainer{true, commands}); }
+    void sendData(std::vector<uint8_t> data) { dataQueue.push(DisplayContainer{false, data}); }
     std::queue<DisplayContainer> dataQueue;
     GPIO commandData;
 };

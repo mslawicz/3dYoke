@@ -27,9 +27,9 @@ void Display::test(void)
     if(timer.elapsed(2000))
     {
         timer.reset();
-        dataQueue.push(DisplayContainer{false, std::vector<uint8_t>{0x12, 0x34, 0x56, 0x78, 0x98, 0x76, 0x54, 0x32, 0x10}});
-        dataQueue.push(DisplayContainer{true, std::vector<uint8_t>{0xab, 0xce}});
-        dataQueue.push(DisplayContainer{false, std::vector<uint8_t>{0x98, 0x76, 0x54, 0x32, 0x10}});
+        sendData(std::vector<uint8_t>{0x12, 0x34, 0x56, 0x78, 0x98, 0x76, 0x54, 0x32, 0x10});
+        sendCommand(std::vector<uint8_t>{0xab, 0xce});
+        sendData(std::vector<uint8_t>{0x98, 0x76, 0x54, 0x32, 0x10});
     }
 }
 

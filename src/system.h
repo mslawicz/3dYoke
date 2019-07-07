@@ -30,6 +30,7 @@ private:
     GPIO systemPushbutton;
     Console* pConsole;
     Display* pDisplay;
+    SpiBus* pSpi3;
 };
 
 #endif /* SYSTEM_H_ */

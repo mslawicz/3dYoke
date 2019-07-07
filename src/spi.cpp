@@ -19,9 +19,9 @@ SpiBus::SpiBus(SPI_TypeDef* instance) :
         name = "SPI3";
 
         // MOSI pin
-        GPIO(GPIOC, GPIO_PIN_12, GPIO_MODE_AF_PP, GPIO_NOPULL, GPIO_SPEED_FREQ_VERY_HIGH, GPIO_AF6_SPI3);
+        GPIO(GPIOC, GPIO_PIN_12, GPIO_MODE_AF_PP, GPIO_PULLDOWN, GPIO_SPEED_FREQ_VERY_HIGH, GPIO_AF6_SPI3);
         // SCK pin
-        GPIO(GPIOC, GPIO_PIN_10, GPIO_MODE_AF_PP, GPIO_NOPULL, GPIO_SPEED_FREQ_VERY_HIGH, GPIO_AF6_SPI3);
+        GPIO(GPIOC, GPIO_PIN_10, GPIO_MODE_AF_PP, GPIO_PULLDOWN, GPIO_SPEED_FREQ_VERY_HIGH, GPIO_AF6_SPI3);
         /* Peripheral clock enable */
         __HAL_RCC_SPI3_CLK_ENABLE();
         /* Peripheral interrupt init */
@@ -118,7 +118,8 @@ void SpiDevice::send(std::vector<uint8_t> data)
     {
         chipSelect.write(GPIO_PinState::GPIO_PIN_RESET);
     }
-    if(HAL_SPI_Transmit_DMA(pBus->getHandle(), &dataToSend[0], dataToSend.size()) == HAL_OK)
+    //if(HAL_SPI_Transmit_DMA(pBus->getHandle(), &dataToSend[0], dataToSend.size()) == HAL_OK)
+    if(HAL_SPI_Transmit(pBus->getHandle(),  &dataToSend[0], dataToSend.size(), 100) == HAL_OK)//XXX
     {
         pBus->markAsBusy();
         pBus->pLastServedDevice = this;
@@ -129,6 +130,7 @@ void SpiDevice::send(std::vector<uint8_t> data)
         chipSelect.write(GPIO_PinState::GPIO_PIN_SET);
         pBus->pLastServedDevice = nullptr;
     }
+    chipSelect.write(GPIO_PinState::GPIO_PIN_SET);//XXX
 }
 
 /*

@@ -74,6 +74,7 @@ SpiBus::SpiBus(SPI_TypeDef* instance) :
     }
     busy = false;
     pLastServedDevice = nullptr;
+    System::getInstance().testPin.write(GPIO_PinState::GPIO_PIN_RESET);//XXX
 }
 
 SpiBus::~SpiBus()
@@ -87,6 +88,7 @@ SpiBus::~SpiBus()
 void SpiBus::markAsFree(void)
 {
     busy = false;
+    System::getInstance().testPin.write(GPIO_PinState::GPIO_PIN_RESET);//XXX
     if((pLastServedDevice != nullptr) && (pLastServedDevice->autoCS))
     {
         // current served device chip select inactive
@@ -190,6 +192,7 @@ void HAL_SPI_TxCpltCallback(SPI_HandleTypeDef *hspi)
     {
         // mark this SPI bus as free
         SpiBus::pSpi3->markAsFree();
+        System::getInstance().getConsole()->sendMessage(Severity::Error, LogChannel::LC_SPI, "callback is marking as free");//XXX
     }
 }
 
@@ -202,7 +205,6 @@ void HAL_SPI_TxCpltCallback(SPI_HandleTypeDef *hspi)
   */
 void HAL_SPI_RxCpltCallback(SPI_HandleTypeDef *hspi)
 {
-
 }
 
 /**
@@ -213,7 +215,6 @@ void HAL_SPI_RxCpltCallback(SPI_HandleTypeDef *hspi)
   */
 void HAL_SPI_TxRxCpltCallback(SPI_HandleTypeDef *hspi)
 {
-
 }
 
 /*

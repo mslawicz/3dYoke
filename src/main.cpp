@@ -32,6 +32,7 @@ int main(void)
 
         System::getInstance().getConsole()->handler();
         System::getInstance().getDisplay()->test();
+        System::getInstance().getDisplay()->handler();
     }
 
     System::getInstance().terminate();

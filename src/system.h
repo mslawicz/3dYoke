@@ -23,6 +23,7 @@ public:
     void blinkLED(void);
     Console* getConsole(void) const { return pConsole; }
     Display* getDisplay(void) const { return pDisplay; }
+    GPIO testPin;
 private:
     System();
     void configClock(void);

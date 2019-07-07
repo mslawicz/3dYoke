@@ -10,6 +10,7 @@
 
 #include "stm32f4xx_hal.h"
 #include "gpio.h"
+#include "system.h"//XXX
 #include <vector>
 
 #define DISPLAY_CS_PORT GPIOD
@@ -24,7 +25,7 @@ public:
     ~SpiBus();
     SPI_HandleTypeDef* getHandle(void) const { return const_cast<__SPI_HandleTypeDef*>(&hSpi); }
     DMA_HandleTypeDef* getDmaTxHandle(void) const { return const_cast<DMA_HandleTypeDef*>(&hDmaTx); }
-    void markAsBusy(void) { busy = true; }
+    void markAsBusy(void) { busy = true; System::getInstance().testPin.write(GPIO_PinState::GPIO_PIN_SET);//XXX}
     void markAsFree(void);
     void markNewDataReady(void);
     bool isBusy(void) const { return busy; }
@@ -33,7 +34,7 @@ public:
 private:
     SPI_HandleTypeDef hSpi;
     SPI_TypeDef* instance;
-    bool busy;      // true if SPI bus is busy
+    volatile bool busy;      // true if SPI bus is busy
     SpiDevice* pLastServedDevice;
     DMA_HandleTypeDef hDmaTx;
 };

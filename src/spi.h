@@ -24,7 +24,7 @@ public:
     ~SpiBus();
     SPI_HandleTypeDef* getHandle(void) const { return const_cast<__SPI_HandleTypeDef*>(&hSpi); }
     DMA_HandleTypeDef* getDmaTxHandle(void) const { return const_cast<DMA_HandleTypeDef*>(&hDmaTx); }
-    void markAsBusy(void) ;//XXX  { busy = true; }
+    void markAsBusy(void) { busy = true; }
     void markAsFree(void);
     void markNewDataReady(void);
     bool isBusy(void) const { return busy; }

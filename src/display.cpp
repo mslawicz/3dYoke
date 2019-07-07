@@ -22,7 +22,7 @@ Display::~Display()
 void Display::test(void)
 {
     static Timer timer;
-    if(timer.elapsed(100000))
+    if(timer.elapsed(2000))
     {
         timer.reset();
         dataQueue.push(std::vector<uint8_t>{0x12, 0x34, 0x56, 0x78, 0x98, 0x76, 0x54, 0x32, 0x10});

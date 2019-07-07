@@ -13,6 +13,9 @@
 #include <queue>
 #include <vector>
 
+#define DISPLAY_CD_PORT GPIOC
+#define DISPLAY_CD_PIN  GPIO_PIN_11
+
 class Display : public SpiDevice
 {
 public:
@@ -22,6 +25,7 @@ public:
     void handler(void);
 private:
     std::queue<std::vector<uint8_t>> dataQueue;
+    GPIO commandData;
 };
 
 #endif /* DISPLAY_H_ */

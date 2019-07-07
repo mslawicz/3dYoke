@@ -7,9 +7,11 @@
 
 #include "display.h"
 #include "timer.h"
+#include "gpio.h"
 
 Display::Display(SpiBus* pBus, GPIO_TypeDef* portCS, uint32_t pinCS) :
-    SpiDevice(pBus, portCS, pinCS)
+    SpiDevice(pBus, portCS, pinCS),
+    commandData(DISPLAY_CD_PORT, DISPLAY_CD_PIN, GPIO_MODE_OUTPUT_PP, GPIO_NOPULL, GPIO_SPEED_FREQ_VERY_HIGH)
 {
 
 }

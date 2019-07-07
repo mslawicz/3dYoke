@@ -14,9 +14,10 @@
 #include "display.h"
 
 System::System() :
+    testPin(GPIOB, GPIO_PIN_7, GPIO_MODE_OUTPUT_PP),
     systemLED(LED2_GPIO_PORT, LED2_PIN, GPIO_MODE_OUTPUT_PP),
-    systemPushbutton(USER_BUTTON_GPIO_PORT, USER_BUTTON_PIN, GPIO_MODE_INPUT, GPIO_PULLUP),
-    testPin(GPIOB, GPIO_PIN_7, GPIO_MODE_OUTPUT_PP)
+    systemPushbutton(USER_BUTTON_GPIO_PORT, USER_BUTTON_PIN, GPIO_MODE_INPUT, GPIO_PULLUP)
+
 {
     /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
     HAL_Init();

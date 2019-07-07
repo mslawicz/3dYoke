@@ -238,3 +238,10 @@ void HAL_SPI_ErrorCallback(SPI_HandleTypeDef *hspi)
 {
     System::getInstance().getConsole()->sendMessage(Severity::Error, LogChannel::LC_SPI, " SPI error code=" + std::to_string(HAL_SPI_GetError(hspi)));
 }
+
+//XXX
+void SpiBus::markAsBusy(void)
+{
+    busy = true;
+    System::getInstance().testPin.write(GPIO_PinState::GPIO_PIN_SET);
+}

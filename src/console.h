@@ -22,7 +22,6 @@ enum LogChannel
 {
     LC_SYSTEM,
     LC_CONSOLE,
-    LC_BLUETOOTH,
     LC_I2C,
     LC_SPI,
     LC_END

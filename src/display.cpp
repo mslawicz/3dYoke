@@ -7,8 +7,6 @@
 
 #include "display.h"
 #include "timer.h"
-#include "console.h"//XXX
-#include "system.h"//XXX
 
 Display::Display(SpiBus* pBus, GPIO_TypeDef* portCS, uint32_t pinCS) :
     SpiDevice(pBus, portCS, pinCS)
@@ -38,15 +36,8 @@ void Display::test(void)
  */
 void Display::handler(void)
 {
-    static bool bs = false;
-    if(bs != pBus->isBusy())
-    {
-        bs = pBus->isBusy();
-        System::getInstance().getConsole()->sendMessage(Severity::Info, LogChannel::LC_SPI, "busy=" + Console::toHex((int)bs));//XXX
-    }
     if((!pBus->isBusy()) && (!dataQueue.empty()))
     {
-        System::getInstance().getConsole()->sendMessage(Severity::Info, LogChannel::LC_SPI, "queue size=" + Console::toHex(dataQueue.size()));//XXX
         // transmit another part of display data
         send(dataQueue.front());
         dataQueue.pop();

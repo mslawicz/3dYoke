@@ -120,9 +120,9 @@ void SpiDevice::send(std::vector<uint8_t> data)
     {
         chipSelect.write(GPIO_PinState::GPIO_PIN_RESET);
     }
+    pBus->markAsBusy();
     if(HAL_SPI_Transmit_DMA(pBus->getHandle(), &dataToSend[0], dataToSend.size()) == HAL_OK)
     {
-        pBus->markAsBusy();
         pBus->pLastServedDevice = this;
     }
     else
@@ -130,6 +130,7 @@ void SpiDevice::send(std::vector<uint8_t> data)
         // no transmission started
         chipSelect.write(GPIO_PinState::GPIO_PIN_SET);
         pBus->pLastServedDevice = nullptr;
+        pBus->markAsFree();
     }
 }
 
@@ -192,7 +193,6 @@ void HAL_SPI_TxCpltCallback(SPI_HandleTypeDef *hspi)
     {
         // mark this SPI bus as free
         SpiBus::pSpi3->markAsFree();
-        System::getInstance().getConsole()->sendMessage(Severity::Error, LogChannel::LC_SPI, "callback is marking as free");//XXX
     }
 }
 

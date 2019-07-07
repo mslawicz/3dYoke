@@ -118,8 +118,7 @@ void SpiDevice::send(std::vector<uint8_t> data)
     {
         chipSelect.write(GPIO_PinState::GPIO_PIN_RESET);
     }
-    //if(HAL_SPI_Transmit_DMA(pBus->getHandle(), &dataToSend[0], dataToSend.size()) == HAL_OK)
-    if(HAL_SPI_Transmit(pBus->getHandle(),  &dataToSend[0], dataToSend.size(), 100) == HAL_OK)//XXX
+    if(HAL_SPI_Transmit_DMA(pBus->getHandle(), &dataToSend[0], dataToSend.size()) == HAL_OK)
     {
         pBus->markAsBusy();
         pBus->pLastServedDevice = this;
@@ -130,7 +129,6 @@ void SpiDevice::send(std::vector<uint8_t> data)
         chipSelect.write(GPIO_PinState::GPIO_PIN_SET);
         pBus->pLastServedDevice = nullptr;
     }
-    chipSelect.write(GPIO_PinState::GPIO_PIN_SET);//XXX
 }
 
 /*

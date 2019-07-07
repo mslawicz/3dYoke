@@ -24,12 +24,11 @@ Display::~Display()
 void Display::test(void)
 {
     static Timer timer;
-    if(timer.elapsed(2000))
+    static uint8_t onOff = 0;
+    if(timer.elapsed(100000))
     {
         timer.reset();
-        sendData(std::vector<uint8_t>{0x12, 0x34, 0x56, 0x78, 0x98, 0x76, 0x54, 0x32, 0x10});
-        sendCommand(std::vector<uint8_t>{0xab, 0xce});
-        sendData(std::vector<uint8_t>{0x98, 0x76, 0x54, 0x32, 0x10});
+        sendCommand(std::vector<uint8_t>{static_cast<uint8_t>(0xA4 | (++onOff & 0x01))});
     }
 }
 

@@ -29,6 +29,7 @@ public:
 private:
     void sendCommand(std::vector<uint8_t> commands) { dataQueue.push(DisplayContainer{true, commands}); }
     void sendData(std::vector<uint8_t> data) { dataQueue.push(DisplayContainer{false, data}); }
+    void setColumn(uint8_t column) { sendCommand(std::vector<uint8_t>{static_cast<uint8_t>(column & 0x0F), static_cast<uint8_t>(0x10 | ((column >> 4) & 0x0F))}); }
     std::queue<DisplayContainer> dataQueue;
     GPIO commandData;
 };

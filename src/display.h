@@ -12,9 +12,12 @@
 #include "gpio.h"
 #include <queue>
 #include <vector>
+#include <utility>
 
 #define DISPLAY_CD_PORT GPIOC
 #define DISPLAY_CD_PIN  GPIO_PIN_11
+
+typedef std::pair<bool, std::vector<uint8_t>> DisplayContainer;
 
 class Display : public SpiDevice
 {
@@ -24,7 +27,7 @@ public:
     void test(void);
     void handler(void);
 private:
-    std::queue<std::vector<uint8_t>> dataQueue;
+    std::queue<DisplayContainer> dataQueue;
     GPIO commandData;
 };
 

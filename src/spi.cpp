@@ -59,7 +59,7 @@ SpiBus::SpiBus(SPI_TypeDef* instance) :
     hSpi.Init.CLKPolarity = SPI_POLARITY_LOW;
     hSpi.Init.CLKPhase = SPI_PHASE_1EDGE;
     hSpi.Init.NSS = SPI_NSS_SOFT;
-    hSpi.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_128;    // clock 666 kHz
+    hSpi.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_64;    // clock 666 kHz
     hSpi.Init.FirstBit = SPI_FIRSTBIT_MSB;
     hSpi.Init.TIMode = SPI_TIMODE_DISABLE;
     hSpi.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;

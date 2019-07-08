@@ -43,14 +43,25 @@ void Display::handler(void)
     {
     case DS_start:
         reset.write(GPIO_PinState::GPIO_PIN_SET);
-        state = DS_initialize;
+        displayTimer.reset();
+        state = DS_wait_before_init;
+        break;
+    case DS_wait_before_init:
+        if(displayTimer.elapsed(WaitBeforeInitTime))
+        {
+            state = DS_initialize;
+        }
         break;
     case DS_initialize:
+        //display command is to be sent
+        commandData.write(GPIO_PinState::GPIO_PIN_RESET);
+        //send the initialization data
+        send(initData);
         displayTimer.reset();
-        state = DS_wait;
+        state = DS_wait_after_init;
         break;
-    case DS_wait:
-        if(displayTimer.elapsed(WaitForInitializationTime))
+    case DS_wait_after_init:
+        if(displayTimer.elapsed(WaitAfterInitTime))
         {
             state = DS_send_loop;
         }

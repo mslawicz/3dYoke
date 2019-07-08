@@ -23,8 +23,9 @@
 enum DisplayState
 {
     DS_start,
+    DS_wait_before_init,
     DS_initialize,
-    DS_wait,
+    DS_wait_after_init,
     DS_send_loop
 };
 
@@ -46,7 +47,22 @@ private:
     GPIO reset;
     DisplayState state;
     Timer displayTimer;
-    const uint32_t WaitForInitializationTime = 100000;
+    const uint32_t WaitBeforeInitTime = 100;
+    const uint32_t WaitAfterInitTime = 100000;
+    const std::vector<uint8_t> initData
+    {
+        0x32,   //DC voltage output value
+        0x40,   //display line for COM0 = 0
+        0x81,   //contrast
+        0x80,
+        0xA0,   //segment right rotation
+        0xA4,   //display in normal mode
+        0xA6,   //display normal indication
+        0xAD,   //DC pump on
+        0x8B,
+        0xC0,   //scan from 0 to N-1
+        0xAF,   //display on
+    };
 };
 
 #endif /* DISPLAY_H_ */

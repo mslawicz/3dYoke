@@ -11,9 +11,11 @@
 
 Display::Display(SpiBus* pBus, GPIO_TypeDef* portCS, uint32_t pinCS) :
     SpiDevice(pBus, portCS, pinCS),
-    commandData(DISPLAY_CD_PORT, DISPLAY_CD_PIN, GPIO_MODE_OUTPUT_PP, GPIO_NOPULL, GPIO_SPEED_FREQ_VERY_HIGH)
+    commandData(DISPLAY_CD_PORT, DISPLAY_CD_PIN, GPIO_MODE_OUTPUT_PP, GPIO_NOPULL, GPIO_SPEED_FREQ_VERY_HIGH),
+    reset(DISPLAY_RESET_PORT, DISPLAY_RESET_PIN, GPIO_MODE_OUTPUT_PP, GPIO_NOPULL, GPIO_SPEED_FREQ_VERY_HIGH)
 {
-
+    reset.write(GPIO_PinState::GPIO_PIN_RESET);
+    state = DisplayState::DS_start;
 }
 
 Display::~Display()
@@ -37,13 +39,34 @@ void Display::test(void)
  */
 void Display::handler(void)
 {
-    if((!pBus->isBusy()) && (!dataQueue.empty()))
+    switch(state)
     {
-        //queue is not empty and SPI is free
-        // set command (0) or data (1) line
-        commandData.write(dataQueue.front().first ? GPIO_PinState::GPIO_PIN_RESET : GPIO_PinState::GPIO_PIN_SET);
-        // send bytes to display
-        send(dataQueue.front().second);
-        dataQueue.pop();
+    case DS_start:
+        reset.write(GPIO_PinState::GPIO_PIN_SET);
+        state = DS_initialize;
+        break;
+    case DS_initialize:
+        displayTimer.reset();
+        state = DS_wait;
+        break;
+    case DS_wait:
+        if(displayTimer.elapsed(WaitForInitializationTime))
+        {
+            state = DS_send_loop;
+        }
+        break;
+    case DS_send_loop:
+        if((!pBus->isBusy()) && (!dataQueue.empty()))
+        {
+            //queue is not empty and SPI is free
+            // set command (0) or data (1) line
+            commandData.write(dataQueue.front().first ? GPIO_PinState::GPIO_PIN_RESET : GPIO_PinState::GPIO_PIN_SET);
+            // send bytes to display
+            send(dataQueue.front().second);
+            dataQueue.pop();
+        }
+        break;
+    default:
+        break;
     }
 }

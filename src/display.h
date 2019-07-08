@@ -10,12 +10,23 @@
 
 #include "spi.h"
 #include "gpio.h"
+#include "timer.h"
 #include <queue>
 #include <vector>
 #include <utility>
 
 #define DISPLAY_CD_PORT GPIOC
 #define DISPLAY_CD_PIN  GPIO_PIN_11
+#define DISPLAY_RESET_PORT GPIOC
+#define DISPLAY_RESET_PIN  GPIO_PIN_14
+
+enum DisplayState
+{
+    DS_start,
+    DS_initialize,
+    DS_wait,
+    DS_send_loop
+};
 
 typedef std::pair<bool, std::vector<uint8_t>> DisplayContainer;
 
@@ -32,6 +43,10 @@ private:
     void setColumn(uint8_t column) { sendCommand(std::vector<uint8_t>{static_cast<uint8_t>(column & 0x0F), static_cast<uint8_t>(0x10 | ((column >> 4) & 0x0F))}); }
     std::queue<DisplayContainer> dataQueue;
     GPIO commandData;
+    GPIO reset;
+    DisplayState state;
+    Timer displayTimer;
+    const uint32_t WaitForInitializationTime = 100000;
 };
 
 #endif /* DISPLAY_H_ */

@@ -23,6 +23,7 @@
 enum DisplayState
 {
     DS_start,
+    DS_reset_off,
     DS_wait_before_init,
     DS_initialize,
     DS_wait_after_init,

@@ -25,11 +25,19 @@ Display::~Display()
 void Display::test(void)
 {
     static Timer timer;
-    static uint8_t onOff = 0;
-    if(timer.elapsed(500000))
+    static bool done = false;
+    if(timer.elapsed(2000000))
     {
         timer.reset();
-        sendData(std::vector<uint8_t>(4, 0xAA));
+        if(!done)
+        {
+            done = true;
+            setColumn(0);
+            sendData(std::vector<uint8_t>{0x01,0x02,0x03,0x04});
+            setColumn(124);
+            sendData(std::vector<uint8_t>{0x01,0x02,0x03,0x04,0x05,0x06});
+        }
+
     }
 }
 

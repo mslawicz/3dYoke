@@ -18,12 +18,14 @@ SpiBus::SpiBus(SPI_TypeDef* instance) :
     {
         name = "SPI3";
 
+        /* Peripheral clock enable */
+        __HAL_RCC_SPI3_CLK_ENABLE();
+        /* DMA controller clock enable */
+        __HAL_RCC_DMA1_CLK_ENABLE();
         // MOSI pin
         GPIO(GPIOC, GPIO_PIN_12, GPIO_MODE_AF_PP, GPIO_PULLDOWN, GPIO_SPEED_FREQ_VERY_HIGH, GPIO_AF6_SPI3);
         // SCK pin
         GPIO(GPIOC, GPIO_PIN_10, GPIO_MODE_AF_PP, GPIO_PULLDOWN, GPIO_SPEED_FREQ_VERY_HIGH, GPIO_AF6_SPI3);
-        /* Peripheral clock enable */
-        __HAL_RCC_SPI3_CLK_ENABLE();
         /* Peripheral interrupt init */
         HAL_NVIC_SetPriority(SPI3_IRQn, 1, 1);
         HAL_NVIC_EnableIRQ(SPI3_IRQn);
@@ -203,6 +205,12 @@ void HAL_SPI_TxCpltCallback(SPI_HandleTypeDef *hspi)
   */
 void HAL_SPI_RxCpltCallback(SPI_HandleTypeDef *hspi)
 {
+    if(hspi->Instance == SPI3)
+    {
+        System::getInstance().getConsole()->sendMessage(Severity::Error, LogChannel::LC_SPI, "Unexpected RxCpltCallback called in SPI3");
+        // mark this SPI bus as free
+        SpiBus::pSpi3->markAsFree();
+    }
 }
 
 /**
@@ -213,6 +221,12 @@ void HAL_SPI_RxCpltCallback(SPI_HandleTypeDef *hspi)
   */
 void HAL_SPI_TxRxCpltCallback(SPI_HandleTypeDef *hspi)
 {
+    if(hspi->Instance == SPI3)
+    {
+        System::getInstance().getConsole()->sendMessage(Severity::Error, LogChannel::LC_SPI, "Unexpected TxRxCpltCallback called in SPI3");
+        // mark this SPI bus as free
+        SpiBus::pSpi3->markAsFree();
+    }
 }
 
 /*
@@ -234,6 +248,6 @@ void SpiBus::markNewDataReady(void)
   */
 void HAL_SPI_ErrorCallback(SPI_HandleTypeDef *hspi)
 {
-    System::getInstance().getConsole()->sendMessage(Severity::Error, LogChannel::LC_SPI, " SPI error code=" + std::to_string(HAL_SPI_GetError(hspi)));
+    System::getInstance().getConsole()->sendMessage(Severity::Error, LogChannel::LC_SPI, "SPI error code=" + std::to_string(HAL_SPI_GetError(hspi)));
 }
 

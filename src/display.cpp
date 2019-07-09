@@ -26,11 +26,10 @@ void Display::test(void)
 {
     static Timer timer;
     static uint8_t onOff = 0;
-    return;
-    if(timer.elapsed(100000))
+    if(timer.elapsed(500000))
     {
         timer.reset();
-        sendCommand(std::vector<uint8_t>{static_cast<uint8_t>(0xA4 | (++onOff & 0x01))});
+        sendData(std::vector<uint8_t>(4, 0xF0));
     }
 }
 
@@ -44,7 +43,7 @@ void Display::handler(void)
     case DS_start:
         reset.write(GPIO_PinState::GPIO_PIN_RESET);
         //send a dummy byte to get SPI ready
-        send(std::vector<uint8_t>{0xAA});
+        send(std::vector<uint8_t>{0x00});
         state = DS_reset_off;
         break;
     case DS_reset_off:

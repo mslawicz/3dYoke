@@ -150,7 +150,7 @@ void USART2_IRQHandler(void)
   */
 void SPI3_IRQHandler(void)
 {
-    //HAL_SPI_IRQHandler(SpiBus::pSpi1->getHandle());
+    HAL_SPI_IRQHandler(SpiBus::pSpi3->getHandle());
 }
 
 /**

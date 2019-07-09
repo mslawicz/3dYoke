@@ -29,7 +29,7 @@ void Display::test(void)
     if(timer.elapsed(500000))
     {
         timer.reset();
-        sendData(std::vector<uint8_t>(4, 0xF0));
+        sendData(std::vector<uint8_t>(4, 0xAA));
     }
 }
 

@@ -17,7 +17,6 @@ SpiBus::SpiBus(SPI_TypeDef* instance) :
     if(instance == SPI3)
     {
         name = "SPI3";
-
         /* Peripheral clock enable */
         __HAL_RCC_SPI3_CLK_ENABLE();
         /* DMA controller clock enable */
